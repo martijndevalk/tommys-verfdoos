@@ -290,6 +290,7 @@
   min-height: 32px;
   max-width: 40px;
   max-height: 40px;
+  aspect-ratio: 1;
   border-radius: 9999px;
   position: relative;
   transition: all 0.2s ease-out;

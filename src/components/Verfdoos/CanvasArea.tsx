@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Palette } from 'lucide-react';
 import styles from './CanvasArea.module.css';
 
@@ -29,6 +29,24 @@ export function CanvasArea({
 }: Props) {
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const canvas = eventCanvasRef.current;
+    if (!canvas) return;
+
+    const preventTouchScroll = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    // Use passive: false to allow preventDefault() inside the event body
+    canvas.addEventListener('touchstart', preventTouchScroll, { passive: false });
+    canvas.addEventListener('touchmove', preventTouchScroll, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('touchstart', preventTouchScroll);
+      canvas.removeEventListener('touchmove', preventTouchScroll);
+    };
+  }, [eventCanvasRef]);
 
   const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
     onMove(e);
