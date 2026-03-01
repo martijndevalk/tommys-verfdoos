@@ -57,35 +57,24 @@ export function Verfdoos() {
       <div className={styles.appContainer}>
         <div className={styles.contentWrapper}>
           <CanvasArea
-            bgCanvasRef={bgCanvasRef}
-            fgCanvasRef={fgCanvasRef}
-            eventCanvasRef={eventCanvasRef}
-            isLoaded={isLoaded}
             onStart={handleStart}
             onMove={handleMove}
             onEnd={handleEnd}
-            brushSize={brushSize}
-            color={color}
-            activeTool={activeTool}
+            {...{ bgCanvasRef, fgCanvasRef, eventCanvasRef, isLoaded, brushSize, color, activeTool }}
           />
           <Toolbar
-            isToolsOpen={isToolsOpen}
-            setIsToolsOpen={setIsToolsOpen}
-            isDarkMode={isDarkMode}
-            setIsDarkMode={setIsDarkMode}
-            activeLayer={activeLayer}
-            setActiveLayer={setActiveLayer}
-            activeTool={activeTool}
-            setActiveTool={setActiveTool}
-            color={color}
-            setColor={setColor}
-            brushSize={brushSize}
-            setBrushSize={setBrushSize}
-            opacity={opacity}
-            setOpacity={setOpacity}
             onRandomize={randomizeCanvas}
             onClear={clearCanvas}
             onExport={handleExport}
+            {...{
+              isToolsOpen, setIsToolsOpen,
+              isDarkMode, setIsDarkMode,
+              activeLayer, setActiveLayer,
+              activeTool, setActiveTool,
+              color, setColor,
+              brushSize, setBrushSize,
+              opacity, setOpacity
+            }}
           />
         </div>
       </div>
