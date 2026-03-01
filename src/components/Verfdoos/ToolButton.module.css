@@ -1,0 +1,52 @@
+.toolButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 0.25rem;
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: var(--color-gray-500);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+:global(.dark) .toolButton {
+  background: var(--color-gray-800);
+  color: var(--color-gray-400);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.toolButton:hover {
+  background: var(--color-gray-50);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
+}
+
+:global(.dark) .toolButton:hover {
+  background: var(--color-gray-700);
+}
+
+.toolButton.active {
+  background: var(--color-blue-100);
+  color: var(--color-primary);
+  box-shadow: inset 0 2px 8px rgba(0, 161, 255, 0.2), 0 0 0 2px rgba(0, 161, 255, 0.5);
+  transform: scale(0.95);
+}
+
+:global(.dark) .toolButton.active {
+  background: rgba(30, 58, 138, 0.4);
+  color: var(--color-blue-400);
+}
+
+.iconWrapper {
+  margin-bottom: 0.375rem;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
