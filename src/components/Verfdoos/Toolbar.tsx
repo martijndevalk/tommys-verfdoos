@@ -48,7 +48,7 @@ export function Toolbar({
         onClick={() => setIsToolsOpen(!isToolsOpen)}
       >
         <div className={styles.handleTitle}>
-          <Palette size={20} className={styles.handleIcon} />
+          <Palette size={18} className={styles.handleIcon} />
           <span>Verfdoos Openen</span>
         </div>
         <div className={styles.handleChevron}>
@@ -60,7 +60,7 @@ export function Toolbar({
         <div className={styles.header}>
           <div>
             <h1 className={styles.title}>
-              Tommy's Verfdoos <Sparkles size={20} className={styles.sparkles} />
+              Tommy's Verfdoos <Sparkles size={18} className={styles.sparkles} />
             </h1>
             <p className={styles.subtitle}>Klieder, meng en maak er een meesterwerk van!</p>
           </div>
@@ -69,7 +69,7 @@ export function Toolbar({
             onClick={() => setIsDarkMode(!isDarkMode)}
             title="Wissel Thema"
           >
-            {isDarkMode ? <Sun size={22} strokeWidth={2.5} /> : <Moon size={22} strokeWidth={2.5} />}
+            {isDarkMode ? <Sun size={18} strokeWidth={2.5} /> : <Moon size={18} strokeWidth={2.5} />}
           </button>
         </div>
 
@@ -154,7 +154,7 @@ export function Toolbar({
         <div className={styles.actionsBox}>
           <button onClick={onRandomize} className={styles.magicButton}>
             <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}>
-              <Sparkles size={20} strokeWidth={2.5} className={styles.magicIcon} />
+              <Sparkles size={18} strokeWidth={2.5} className={styles.magicIcon} />
             </motion.div>
             Verras Me met Magie!
           </button>

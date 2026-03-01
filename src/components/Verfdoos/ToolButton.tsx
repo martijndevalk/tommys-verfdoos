@@ -17,11 +17,11 @@ export function ToolButton({ id, icon: Icon, label, isActive, onClick }: Props) 
       className={`${styles.toolButton} ${isActive ? styles.active : ''}`}
     >
       <motion.div
-        whileHover={iconAnimations[id]}
-        whileTap={iconAnimations[id]}
+        whileHover={iconAnimations[id] as any}
+        whileTap={iconAnimations[id] as any}
         className={styles.iconWrapper}
       >
-        <Icon size={26} strokeWidth={2.5} />
+        <Icon size={22} strokeWidth={2.5} />
       </motion.div>
       <span className={styles.label}>{label}</span>
     </button>
