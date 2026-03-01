@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, ChevronDown, Sparkles, Trash2, Download, Sun, Moon, User, Image as ImageIcon, Layers, Circle } from 'lucide-react';
+import { Palette, ChevronDown, Sparkles, Trash2, Download, Sun, Moon, User, Image as ImageIcon, Layers, Circle, Smartphone } from 'lucide-react';
 import { Brush, PenTool, SprayCan, Blend, PaintBucket, Stamp, Droplet, Eraser } from 'lucide-react';
 import { COLORS } from './constants';
 import { ToolButton } from './ToolButton';
@@ -40,6 +40,27 @@ export function Toolbar({
   const handleColorChange = (c: string) => {
     setColor(c);
     if (activeTool === 'gum' || activeTool === 'mengen') setActiveTool('kwast');
+  };
+
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
   };
 
   return (
@@ -160,6 +181,11 @@ export function Toolbar({
                 <Download size={18} className={styles.actionIcon} /> Opslaan
               </button>
             </div>
+            {deferredPrompt && (
+              <button onClick={handleInstallClick} className={styles.installButton}>
+                <Smartphone size={18} className={styles.actionIcon} /> Installeer App
+              </button>
+            )}
           </div>
         </div>
 
