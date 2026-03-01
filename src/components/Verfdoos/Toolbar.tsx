@@ -62,6 +62,24 @@ export function Toolbar({
           </button>
         </div>
 
+        {/* Lagen tab area - moved to top for clarity */}
+        <div className={styles.sectionLayersTop}>
+          <div className={styles.sectionHeader}>Je tekent nu op:</div>
+          <div className={styles.layerTabs}>
+            <button
+              onClick={() => setActiveLayer('fg')}
+              className={`${styles.layerTab} ${activeLayer === 'fg' ? styles.layerTabActive : ''}`}
+            >
+              <User size={18} strokeWidth={2.5} className={styles.tabIcon} /> Tommy
+            </button>
+            <button
+              onClick={() => setActiveLayer('bg')}
+              className={`${styles.layerTab} ${activeLayer === 'bg' ? styles.layerTabActive : ''}`}
+            >
+              <Circle size={18} strokeWidth={2.5} className={styles.tabIcon} /> Cirkel
+            </button>
+          </div>
+        </div>
         {/* Tools tab area */}
         <div className={styles.sectionTools}>
           <div className={styles.toolsGrid}>
@@ -124,23 +142,8 @@ export function Toolbar({
           </div>
         </div>
 
-        {/* Lagen tab area */}
+        {/* Lagen tab area was moved to top */}
         <div className={styles.sectionLayers}>
-          <div className={styles.layerTabs}>
-            <button
-              onClick={() => setActiveLayer('fg')}
-              className={`${styles.layerTab} ${activeLayer === 'fg' ? styles.layerTabActive : ''}`}
-            >
-              <User size={18} strokeWidth={2.5} className={styles.tabIcon} /> Tommy
-            </button>
-            <button
-              onClick={() => setActiveLayer('bg')}
-              className={`${styles.layerTab} ${activeLayer === 'bg' ? styles.layerTabActive : ''}`}
-            >
-              <Circle size={18} strokeWidth={2.5} className={styles.tabIcon} /> Cirkel
-            </button>
-          </div>
-
           <div className={styles.actionsBox}>
             <button onClick={onRandomize} className={styles.magicButton}>
               <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}>
