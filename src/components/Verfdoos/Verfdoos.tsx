@@ -64,6 +64,9 @@ export function Verfdoos() {
             onStart={handleStart}
             onMove={handleMove}
             onEnd={handleEnd}
+            brushSize={brushSize}
+            color={color}
+            activeTool={activeTool}
           />
           <Toolbar
             isToolsOpen={isToolsOpen}

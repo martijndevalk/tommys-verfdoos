@@ -31,6 +31,8 @@ export const useVerfdoosCanvas = (isDarkMode: boolean) => {
     if (bgCanvasRef.current) {
       const bgCtx = bgCanvasRef.current.getContext('2d', { willReadFrequently: true });
       if (bgCtx) {
+        bgCtx.globalCompositeOperation = 'source-over';
+        bgCtx.globalAlpha = 1.0;
         bgCtx.clearRect(0, 0, width, height);
         bgCtx.beginPath();
         bgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);
@@ -42,6 +44,8 @@ export const useVerfdoosCanvas = (isDarkMode: boolean) => {
     if (fgCanvasRef.current) {
       const fgCtx = fgCanvasRef.current.getContext('2d', { willReadFrequently: true });
       if (fgCtx) {
+        fgCtx.globalCompositeOperation = 'source-over';
+        fgCtx.globalAlpha = 1.0;
         fgCtx.clearRect(0, 0, width, height);
         fgCtx.beginPath();
         fgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);

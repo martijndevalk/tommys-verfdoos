@@ -64,8 +64,9 @@ export const useVerfdoosDrawing = ({
     ctx.globalCompositeOperation = 'source-atop';
 
     if (activeTool === 'gum') {
+      const fgColor = baseBgColor.current === '#000000' ? '#FFFFFF' : '#000000';
       ctx.globalAlpha = opacity / 100;
-      ctx.strokeStyle = activeLayer === 'fg' ? '#FFFFFF' : baseBgColor.current;
+      ctx.strokeStyle = activeLayer === 'fg' ? fgColor : baseBgColor.current;
       ctx.lineWidth = brushSize;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -158,7 +159,7 @@ export const useVerfdoosDrawing = ({
   };
 
   const handleStart = (e: any) => {
-    if (e.cancelable) e.preventDefault();
+    if (e.cancelable && !e.type?.startsWith('touch')) e.preventDefault();
     const { x, y } = getCoordinates(e);
 
     const activeCanvas = activeLayer === 'fg' ? fgCanvasRef.current : bgCanvasRef.current;
@@ -197,7 +198,7 @@ export const useVerfdoosDrawing = ({
   };
 
   const handleMove = (e: any) => {
-    if (e.cancelable) e.preventDefault();
+    if (e.cancelable && !e.type?.startsWith('touch')) e.preventDefault();
     if (!drawState.current.isDrawing) return;
     const { x, y } = getCoordinates(e);
 

@@ -4,10 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 0.5rem;
   overflow: hidden;
   height: 100%;
-  padding-bottom: 6rem;
+  padding-bottom: 1.5rem;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(4px);
 }
@@ -20,8 +20,7 @@
   .canvasContainer {
     padding: 3rem;
     padding-bottom: 3rem;
-    border-top-right-radius: 1.5rem;
-    border-bottom-right-radius: 1.5rem;
+    border-radius: 1.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   }
 }
@@ -53,18 +52,14 @@
 .canvasWrapper {
   position: relative;
   border-radius: 9999px;
-  background: white;
+  background: transparent;
   width: 100%;
-  max-width: 600px;
+  max-width: min(600px, 100%);
+  max-height: 100%;
   aspect-ratio: 1 / 1;
   touch-action: none;
   opacity: 0;
   transition: opacity 0.7s ease-in-out;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
-
-:global(.dark) .canvasWrapper {
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
 .canvasWrapper.loaded {
@@ -99,4 +94,19 @@
     transform: none;
     animation-timing-function: cubic-bezier(0,0,0.2,1);
   }
+}
+
+.hideNativeCursor {
+  cursor: none !important;
+}
+
+.customCursor {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  border: 2px solid white;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.1);
+  transition: width 0.1s, height 0.1s, border-color 0.1s, background-color 0.1s;
 }

@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import { Palette } from 'lucide-react';
 import styles from './CanvasArea.module.css';
 
@@ -9,9 +10,45 @@ type Props = {
   onStart: (e: any) => void;
   onMove: (e: any) => void;
   onEnd: () => void;
+  brushSize: number;
+  color: string;
+  activeTool: string;
 };
 
-export function CanvasArea({ bgCanvasRef, fgCanvasRef, eventCanvasRef, isLoaded, onStart, onMove, onEnd }: Props) {
+export function CanvasArea({
+  bgCanvasRef,
+  fgCanvasRef,
+  eventCanvasRef,
+  isLoaded,
+  onStart,
+  onMove,
+  onEnd,
+  brushSize,
+  color,
+  activeTool
+}: Props) {
+  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
+    onMove(e);
+
+    const canvas = eventCanvasRef.current;
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
+
+      const xPercent = ((clientX - rect.left) / rect.width) * 100;
+      const yPercent = ((clientY - rect.top) / rect.height) * 100;
+      setCursorPos({ x: xPercent, y: yPercent });
+      setIsHovering(true);
+    }
+  };
+
+  const currentDiameter = activeTool === 'stempel' ? brushSize * 3 : brushSize;
+  const cursorSizePercent = (currentDiameter / 580) * 100;
+  const showCursor = isHovering && activeTool !== 'emmer';
   return (
     <div className={styles.canvasContainer}>
       {!isLoaded && (
@@ -26,15 +63,30 @@ export function CanvasArea({ bgCanvasRef, fgCanvasRef, eventCanvasRef, isLoaded,
         <canvas ref={fgCanvasRef} className={styles.layerFg} />
         <canvas
           ref={eventCanvasRef}
-          className={styles.layerEvent}
+          className={`${styles.layerEvent} ${showCursor ? styles.hideNativeCursor : ''}`}
           onMouseDown={onStart}
-          onMouseMove={onMove}
+          onMouseMove={handlePointerMove}
           onMouseUp={onEnd}
-          onMouseLeave={onEnd}
+          onMouseLeave={() => { setIsHovering(false); onEnd(); }}
           onTouchStart={onStart}
-          onTouchMove={onMove}
+          onTouchMove={handlePointerMove}
           onTouchEnd={onEnd}
+          onMouseEnter={() => setIsHovering(true)}
         />
+
+        {showCursor && (
+          <div
+            className={styles.customCursor}
+            style={{
+              left: `${cursorPos.x}%`,
+              top: `${cursorPos.y}%`,
+              width: `${cursorSizePercent}%`,
+              height: `${cursorSizePercent}%`,
+              borderColor: activeTool === 'gum' ? '#9CA3AF' : color,
+              backgroundColor: activeTool === 'gum' ? 'rgba(255,255,255,0.8)' : 'transparent'
+            }}
+          />
+        )}
       </div>
     </div>
   );
