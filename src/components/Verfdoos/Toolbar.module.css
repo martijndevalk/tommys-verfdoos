@@ -534,3 +534,140 @@
 .actionIcon {
   margin-right: 0.5rem;
 }
+
+/* Mobile Nav Bar (Bottom) */
+.mobileNavBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 4.5rem;
+  background: white;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 20;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+
+:global(.dark) .mobileNavBar {
+  background: var(--color-zinc-900);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 768px) {
+  .mobileNavBar {
+    display: none;
+  }
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  color: var(--color-gray-400);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.65rem;
+  font-weight: 700;
+  gap: 0.25rem;
+}
+
+:global(.dark) .navItem {
+  color: var(--color-gray-500);
+}
+
+.navItem:hover {
+  color: var(--color-gray-700);
+}
+
+:global(.dark) .navItem:hover {
+  color: var(--color-gray-300);
+}
+
+.navActive {
+  color: var(--color-primary);
+}
+
+:global(.dark) .navActive {
+  color: var(--color-primary);
+}
+
+.navIcon {
+  margin-bottom: 2px;
+}
+
+/* Redefine open and closed for the new structure */
+.sidebar {
+  padding-bottom: 4.5rem; /* space for the nav bar */
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    padding-bottom: 0;
+  }
+}
+
+.open {
+  height: 65dvh;
+}
+
+.closed {
+  height: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .open, .closed {
+    height: 100%;
+  }
+}
+
+.mobilePullHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 0 0.5rem;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .mobilePullHandle {
+    display: none;
+  }
+}
+
+.pullIndicator {
+  width: 40px;
+  height: 4px;
+  background: var(--color-gray-300);
+  border-radius: 4px;
+}
+
+:global(.dark) .pullIndicator {
+  background: var(--color-gray-600);
+}
+
+/* Tabs logic */
+@media (max-width: 767px) {
+  .tabSection { display: none; }
+  .activeTab-tools .sectionTools { display: block; }
+  .activeTab-colors .sectionColors { display: block; }
+  .activeTab-layers .sectionLayers { display: block; }
+}
+
+@media (min-width: 768px) {
+  .tabSection {
+    display: block !important;
+  }
+
+  .sectionLayers { order: 1; }
+  .sectionTools { order: 2; margin-top: 1.25rem; }
+  .sectionColors { order: 3; margin-top: 1.25rem; }
+  .actionsBox { margin-top: 1rem; }
+}

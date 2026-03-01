@@ -1,16 +1,59 @@
 import { useRef, useState, useEffect } from 'react';
 import { TOMMY_SVG_PATH, KALIBER_SHAPES, COLORS, drawKaliberShape } from '../constants';
 
-export const useVerfdoosCanvas = () => {
+export const useVerfdoosCanvas = (isDarkMode: boolean) => {
   const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const fgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const eventCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const originalBgData = useRef<ImageData | null>(null);
-  const originalFgData = useRef<ImageData | null>(null);
-  const baseBgColor = useRef<string>('#D1FF00');
+  const baseBgColor = useRef<string>('#FFFFFF');
+
+  const isDarkModeRef = useRef(isDarkMode);
+  useEffect(() => {
+    isDarkModeRef.current = isDarkMode;
+  }, [isDarkMode]);
 
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const applyInitState = () => {
+    const width = 580;
+    const height = 580;
+    const currentIsDarkMode = isDarkModeRef.current;
+
+    // bgCanvas is the Circle (Achtergrond)
+    // fgCanvas is Tommy (Binnenin Tommy)
+    // Light mode: Circle is Black, Tommy is White
+    // Dark mode: Circle is White, Tommy is Black
+    baseBgColor.current = currentIsDarkMode ? '#FFFFFF' : '#000000';
+    const fgColor = currentIsDarkMode ? '#000000' : '#FFFFFF';
+    const path2d = new Path2D(TOMMY_SVG_PATH);
+
+    if (bgCanvasRef.current) {
+      const bgCtx = bgCanvasRef.current.getContext('2d', { willReadFrequently: true });
+      if (bgCtx) {
+        bgCtx.clearRect(0, 0, width, height);
+        bgCtx.beginPath();
+        bgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);
+        bgCtx.fillStyle = baseBgColor.current;
+        bgCtx.fill();
+      }
+    }
+
+    if (fgCanvasRef.current) {
+      const fgCtx = fgCanvasRef.current.getContext('2d', { willReadFrequently: true });
+      if (fgCtx) {
+        fgCtx.clearRect(0, 0, width, height);
+        fgCtx.beginPath();
+        fgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);
+        fgCtx.fillStyle = fgColor;
+        fgCtx.fill();
+
+        fgCtx.globalCompositeOperation = 'destination-out';
+        fgCtx.fill(path2d, 'evenodd');
+        fgCtx.globalCompositeOperation = 'source-over';
+      }
+    }
+  };
 
   useEffect(() => {
     const initCanvases = () => {
@@ -24,48 +67,7 @@ export const useVerfdoosCanvas = () => {
         }
       });
 
-      baseBgColor.current = COLORS[Math.floor(Math.random() * COLORS.length)];
-      const path2d = new Path2D(TOMMY_SVG_PATH);
-
-      if (bgCanvasRef.current) {
-        const bgCtx = bgCanvasRef.current.getContext('2d', { willReadFrequently: true });
-        if (bgCtx) {
-          bgCtx.beginPath();
-          bgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);
-          bgCtx.fillStyle = baseBgColor.current;
-          bgCtx.fill();
-          originalBgData.current = bgCtx.getImageData(0, 0, width, height);
-        }
-      }
-
-      if (fgCanvasRef.current) {
-        const fgCtx = fgCanvasRef.current.getContext('2d', { willReadFrequently: true });
-        if (fgCtx) {
-          fgCtx.beginPath();
-          fgCtx.arc(width / 2, height / 2, width / 2, 0, Math.PI * 2);
-          fgCtx.fillStyle = '#FFFFFF';
-          fgCtx.fill();
-
-          fgCtx.globalCompositeOperation = 'source-atop';
-          const watermarkColors = ['#fdfbf7', '#F6FFCF', '#FFEBDB', '#F0F0F0'];
-          for (let i = 0; i < 45; i++) {
-            fgCtx.fillStyle = watermarkColors[Math.floor(Math.random() * watermarkColors.length)];
-            const randomShape = KALIBER_SHAPES[Math.floor(Math.random() * KALIBER_SHAPES.length)];
-            const rx = Math.random() * width;
-            const ry = Math.random() * height;
-            const rsize = Math.random() * 80 + 30;
-            const rrot = Math.random() * Math.PI * 2;
-            drawKaliberShape(fgCtx, randomShape, rx, ry, rsize, rrot);
-          }
-
-          fgCtx.globalCompositeOperation = 'destination-out';
-          fgCtx.fill(path2d, 'evenodd');
-          fgCtx.globalCompositeOperation = 'source-over';
-
-          originalFgData.current = fgCtx.getImageData(0, 0, width, height);
-        }
-      }
-
+      applyInitState();
       setIsLoaded(true);
     };
 
@@ -73,13 +75,7 @@ export const useVerfdoosCanvas = () => {
   }, []);
 
   const clearCanvas = () => {
-    if (!originalBgData.current || !originalFgData.current) return;
-    if (bgCanvasRef.current && fgCanvasRef.current) {
-      const bgCtx = bgCanvasRef.current.getContext('2d');
-      const fgCtx = fgCanvasRef.current.getContext('2d');
-      bgCtx?.putImageData(originalBgData.current, 0, 0);
-      fgCtx?.putImageData(originalFgData.current, 0, 0);
-    }
+    applyInitState();
   };
 
   const randomizeCanvas = () => {

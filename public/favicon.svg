@@ -11,6 +11,6 @@
   <rect x="21" y="14" width="4" height="4" fill="white"/>
   <rect x="21" y="21" width="4" height="4" fill="white"/>
 
-  <!-- Center 'w' for Tommy's Verfdoos -->
-  <path d="M12 12V20M16 16L14 20V12M20 12V20" stroke="white" stroke-width="3" stroke-linecap="square"/>
+  <!-- Center 'T' for Tommy's Verfdoos -->
+  <path d="M12 12H20M16 12V20" stroke="white" stroke-width="3" stroke-linecap="square"/>
 </svg>

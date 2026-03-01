@@ -30,7 +30,7 @@ export function Verfdoos() {
     clearCanvas,
     randomizeCanvas,
     baseBgColor
-  } = useVerfdoosCanvas();
+  } = useVerfdoosCanvas(isDarkMode);
 
   const {
     handleStart,
